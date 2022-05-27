@@ -7,10 +7,14 @@ from aiogram import md
 from keyboards.inline.create_voice import voice_keyboard
 from loader import dp, bot
 
+from utils.db_api.commands.users import add_user
+
 
 # Обработчик комманды /start
 @dp.message_handler(CommandStart())
 async def start_cmd(message: types.Message):
+    # Добавляем пользователя в БД
+    await add_user(telegram_id=message.chat.id)
     if message.get_args() != '':
         # Отправляем "Печатает..." в переписку
         await bot.send_chat_action(
